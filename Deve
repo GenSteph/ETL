@@ -1,0 +1,532 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Programming for  Data Analysis CA 1",
+      "provenance": [],
+      "collapsed_sections": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/GenSteph/ETL/blob/main/Deve\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Xx_wO1vjA_vc"
+      },
+      "source": [
+        "**Problem 1**\n",
+        "Write a program in Python to prompt the user to input their name, employee number, week\n",
+        "ending date, hours worked, rate per hour, standard and overtime tax percentage rate. Use the\n",
+        "data input to calculate gross pay, tax deductions and net pay. Output the results as a\n",
+        "formatted payslip. Assume that a standard working week is 37.5 hours.\n",
+        "\n",
+        "E.g. Ask the user to enter the following data:\n",
+        "Employee Name:\n",
+        "Employee Number:\n",
+        "Week ending:\n",
+        "Number of hours worked:\n",
+        "Hourly Rate:\n",
+        "Overtime Rate:\n",
+        "Standard Tax Rate:\n",
+        "Overtime Tax Rate:\n",
+        "(sample input – Mark Bate)\n",
+        "(sample input – 123456789A)\n",
+        "(sample input - 26/01/2018)\n",
+        "(sample input – 42.5)\n",
+        "(sample input – 10.50)\n",
+        "(time-and-a-half as 1.5)\n",
+        "(sample input – 20)\n",
+        "(sample input – 50)\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "HCwezXzYwqme",
+        "outputId": "3007e3da-3f1d-4c9e-9a28-bd2a670acd41"
+      },
+      "source": [
+        "name = input(\"Name: \")\n",
+        "employee_number = input(\"Employee Number: \")\n",
+        "week_ending_date = input(\"Week Ending Date: \")\n",
+        "hours_worked = input(\"Hours Worked: \")\n",
+        "rate_per_hour = input(\"Rate Per Hour: \")\n",
+        "standard_tax_rate = input(\"Standard Tax Rate: \")\n",
+        "overtime_tax_rate = input(\"Overtime Tax Rate: \")\n",
+        "extra_hours_worked = input(\"extra_hours_worked: \")\n",
+        "print(name, employee_number, week_ending_date, hours_worked, rate_per_hour, standard_tax_rate, overtime_tax_rate)"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Name: Mark Bate\n",
+            "Employee Number: 123456789A\n",
+            "Week Ending Date: 26/01/2018\n",
+            "Hours Worked: 42.5\n",
+            "Rate Per Hour: 10.5\n",
+            "Standard Tax Rate: 20\n",
+            "Overtime Tax Rate: 50\n",
+            "extra_hours_worked: 5\n",
+            "Mark Bate 123456789A 26/01/2018 42.5 10.5 20 50\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xUk4Efxr-fuK",
+        "outputId": "2b3b9287-3e90-47b0-ed6c-cd762cb0ae76"
+      },
+      "source": [
+        "#Ask the user to enter input\n",
+        "name = input(\"Name: \")\n",
+        "employee_number = input(\"Employee Number: \")\n",
+        "\n",
+        "import datetime\n",
+        "\n",
+        "while True:\n",
+        "# Validate the input from the user based on the date given\n",
+        "    try:\n",
+        "        dateInput = input(\"Enter Your Week Ending Date in these format DD/MM/YYYY: \")\n",
+        "        day, month, year = map(int, dateInput.split('/'))\n",
+        "        weekEndingDate = datetime.date(year, month, day)\n",
+        "        break\n",
+        "    except ValueError as e:\n",
+        "        print(\"Invalid Input. Enter in these format DD/MM/YYYY\")\n",
+        "\n",
+        "# try and catch input function verifies that the user has entered the right values.\n",
+        "def try_and_catch_input(question):\n",
+        "   while True:\n",
+        "        try:\n",
+        "            inputValue = float(input(question))\n",
+        "        except ValueError:\n",
+        "            print(\"Invalid Input, Please input a numeric value\")\n",
+        "            continue\n",
+        "        else:\n",
+        "            return inputValue\n",
+        "\n",
+        "# Instruct the user on the number of hours worked, the hourly rate, the standard tax rate, and the overtime tax rate.\n",
+        "hoursWorked = try_and_catch_input('Enter Hours worked: ')\n",
+        "hourlyRate = try_and_catch_input('Enter rate per hour: ')\n",
+        "formattedHourlyRate = format(hourlyRate, \".2f\")\n",
+        "standardTaxRate = try_and_catch_input(\"Enter Standard Tax Rate in %: \")\n",
+        "overtimeTaxRate = try_and_catch_input(\"Enter Overtime Tax Rate in %: \")\n",
+        "\n",
+        "#If the user did not work longer than the normal 37. 5 hours, the rate of overtime hours is 0.00.\n",
+        "overtimeHours = 0.00  \n",
+        "if hoursWorked > 37.5:\n",
+        "        overtimeHours = hoursWorked - 37.5\n",
+        "        formattedOvertimeHours = format(overtimeHours, \".2f\")\n",
+        "        normalHours = hoursWorked - overtimeHours\n",
+        "        formattedNormalHours = format(normalHours, \".2f\")\n",
+        "\n",
+        "else:\n",
+        "    normalHours = hoursWorked\n",
+        "    overtimeHours = 0\n",
+        "    formattedOvertimeHours = format(overtimeHours, \".2f\")\n",
+        "    formattedNormalHours = format(normalHours, \".2f\")\n",
+        "\n",
+        "# Normal Pay, overtimeRate, overtimePay, standard Tax, overtime Tax, total Pay, total deductions and net Pay\n",
+        "normalPay = normalHours * hourlyRate\n",
+        "overtimeRate = hourlyRate * 1.5\n",
+        "overtimePay = overtimeHours * overtimeRate\n",
+        "formattedOvertimeRate = format(overtimeRate, \".2f\")\n",
+        "formattedOvertimePay = format(overtimePay, \".2f\")\n",
+        "\n",
+        "standardTax = normalPay * (standardTaxRate/ 100)\n",
+        "overtimeTax = overtimePay * (overtimeTaxRate/100)\n",
+        "formattedStandardTax = format(standardTax, \".2f\")\n",
+        "formattedOverTimeTax = format(overtimeTax, \".2f\")\n",
+        "\n",
+        "totalPay = normalPay + overtimePay\n",
+        "totalDeductions = standardTax + overtimeTax\n",
+        "formattedTotalPay = format(totalPay, \".2f\")\n",
+        "formattedTotalDeductions = format(totalDeductions, \".2f\")\n",
+        "\n",
+        "netPay = totalPay - totalDeductions\n",
+        "formattedNetPay = format(netPay, \".2f\")\n",
+        "\n",
+        "\n",
+        "# The Pay slip Format\n",
+        "print(\"\\033[1m\"\"\\t\\t\\t\\t\\t\\t\\t\\tPAY SLIP\\n\" \"WEEK ENDING\", weekEndingDate.strftime(\"%d/%m/%Y\"), \"\\n\" \"Employee:\", name, \"\\n\"\n",
+        "    \"Employee Number:\", employee_number, \"\\n\" \"\\t\\t\\t\\t\\tEarnings\" \"\\t\\t\\t\\tDeductions\\n\" \"\\t\\t\\t\\t\\tHours\" \"\\tRate\" \n",
+        "\"\\tTotal\\n\" \"Hours (normal)\" \"\\t\\t\", formattedNormalHours, \"\\t\", formattedHourlyRate, \"\\t\", normalPay, \"\\tTax @\",\n",
+        "      standardTaxRate, \"%\" \"\\t\", formattedStandardTax, \"\\n\" \"Hours (overtime)\" \"\\t\", formattedOvertimeHours, \"\\t\",\n",
+        "      formattedOvertimeRate, \"\\t\", formattedOvertimePay, \"\\t\\tTax @\", overtimeTaxRate, \"%\" \"\\t\", formattedOverTimeTax,\n",
+        "      \"\\n\\n\\t\\t\\t\\t\\t\", \"Total pay:\\t\\t\\t\\t\\t\", formattedTotalPay, \"\\n\\t\\t\\t\\t\\t\", \"Total deductions:\\t\\t\\t\\t\",\n",
+        "      formattedTotalDeductions, \"\\n\\t\\t\\t\\t\\t\", \"Net pay:\\t\\t\\t\\t\\t\", formattedNetPay)\n",
+        "print(\"\\t\\t\\t\\t\\t\\t\\t\\tPAY SLIP\\t\\t\\t\\t\\t\\t\\t\\t\")\n"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Name: Mark Bate\n",
+            "Employee Number: 123456789A\n",
+            "Enter Your Week Ending Date in these format DD/MM/YYYY: 26/01/2018\n",
+            "Enter Hours worked: 42.5\n",
+            "Enter rate per hour: 10.5\n",
+            "Enter Standard Tax Rate in %: 20\n",
+            "Enter Overtime Tax Rate in %: 50\n",
+            "\u001b[1m\t\t\t\t\t\t\t\tPAY SLIP\n",
+            "WEEK ENDING 26/01/2018 \n",
+            "Employee: Mark Bate \n",
+            "Employee Number: 123456789A \n",
+            "\t\t\t\t\tEarnings\t\t\t\tDeductions\n",
+            "\t\t\t\t\tHours\tRate\tTotal\n",
+            "Hours (normal)\t\t 37.50 \t 10.50 \t 393.75 \tTax @ 20.0 %\t 78.75 \n",
+            "Hours (overtime)\t 5.00 \t 15.75 \t 78.75 \t\tTax @ 50.0 %\t 39.38 \n",
+            "\n",
+            "\t\t\t\t\t Total pay:\t\t\t\t\t 472.50 \n",
+            "\t\t\t\t\t Total deductions:\t\t\t\t 118.12 \n",
+            "\t\t\t\t\t Net pay:\t\t\t\t\t 354.38\n",
+            "\t\t\t\t\t\t\t\tPAY SLIP\t\t\t\t\t\t\t\t\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "rED5NUi31hGs"
+      },
+      "source": [
+        "**Problem 2** \n",
+        "Write a program in Python which prompts the user for their username in the format Domain Name\\Username in the format Domain On entering their domain\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "mBdq9h2AvsBS",
+        "outputId": "78badbf1-3ff6-4991-a2b8-763b985a189d"
+      },
+      "source": [
+        "# Input function displays the WELCOME TO THE DBS CONSOLE to the user\n",
+        "def inputPage():\n",
+        "    print(\"##########################################\")\n",
+        "    print(\"WELCOME TO THE DBS CONSOLE\")\n",
+        "    print(\"##########################################\")\n",
+        "\n",
+        "\n",
+        "# Output function seperate the value entered in the username with\n",
+        "# Outpage function seperate the values in username with the 'split function' into the getData list\n",
+        "# and assign the first element to domain then the second element to Username.\n",
+        "def OutputPage():\n",
+        "    while True:\n",
+        "        try:\n",
+        "            username = input(\"Please enter your Username: \")\n",
+        "            assert \"\\\\\" in username\n",
+        "\n",
+        "        except AssertionError as e:\n",
+        "            # pass\n",
+        "            print(\"Invalid Input, Kindly input \\ between your domain and username\")\n",
+        "            continue\n",
+        "        else:\n",
+        "\n",
+        "            getData = username.split('\\\\')\n",
+        "            print(\"Domain:\", getData[0])\n",
+        "            print(\"Username:\", getData[1])\n",
+        "            break\n",
+        "\n",
+        "# compute the inputPage and outputPage function\n",
+        " # The InputPage function displays the welcome message\n",
+        "inputPage()\n",
+        " # The OutputPage function split the username and print the Domain and username on separates lines.\n",
+        "OutputPage()  # The OutputPage function split the username and print the Domain and username on separates lines.\n",
+        "\n",
+        "\n"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "##########################################\n",
+            "WELCOME TO THE DBS CONSOLE\n",
+            "##########################################\n",
+            "Please enter your Username: DBS\\7451222\n",
+            "Domain: DBS\n",
+            "Username: 7451222\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "zeB-vsFJ4OgP"
+      },
+      "source": [
+        "**Problem 3**\n",
+        "Write a program in Python that prompts the user to enter a number of integer values. The program stores the integers, counts the frequency of each integer and displays the frequency"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6JO8OsFkjduM",
+        "outputId": "f4fef9e2-5b95-4ef2-d6cf-45ad5932ee80"
+      },
+      "source": [
+        "#Prompt user to enter a number of interger values \n",
+        "input_list = int(input(\"Input the number of elements to be stored in the list: \"))          \n",
+        "print(\"Input 5 elements in the list: \")\n",
+        "counter = 0\n",
+        "valuesList = []\n",
+        "\n",
+        "while counter < input_list:\n",
+        "    value = input(\"Element - \" + str(counter) + \": \")\n",
+        "    valuesList.append(value)\n",
+        "    counter +=1\n",
+        "\n",
+        "#Count the number occurrences of each value\n",
+        "import collections\n",
+        "counter=collections.Counter(valuesList)\n",
+        "\n",
+        "#Create a list for the values occurring and a list for the corresponding frequencies \n",
+        "keys = counter.keys()\n",
+        "values2 = counter.values()\n",
+        "#Seperate the outcomes \n",
+        "print(\"\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\")\n",
+        "#create the occurance in the list\n",
+        "print(\"The frequency of all elements in the list: \")\n",
+        "print('\\n'.join({f'{i} occurs {valuesList.count(i)} times' for i in valuesList}))"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Input the number of elements to be stored in the list: 5\n",
+            "Input 5 elements in the list: \n",
+            "Element - 0: 1\n",
+            "Element - 1: 1\n",
+            "Element - 2: 2\n",
+            "Element - 3: 3\n",
+            "Element - 4: 3\n",
+            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+            "The frequency of all elements in the list: \n",
+            "1 occurs 2 times\n",
+            "2 occurs 1 times\n",
+            "3 occurs 2 times\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "d33ORGuUppua"
+      },
+      "source": [
+        "**Problem 4**\n",
+        "Implement the MYPY Phone Book System in Python as per Figure 3 below which allows users to add, delete, update and lookup phone numbers. The MYPY Phone Book System should store the individual’s Full Name and Phone Number. Your program should not allow users to add the same number twice. On adding, deleting, updating or looking up a number, your program should let the user know if the operation was successful or not. On looking up a number return the full name and number of the individual; if the number is not found give the user the option to add the details they are looking up. The user can perform multiple actions; they can add a new entry and subsequently delete an entry without having to stop and start the program until they decide to quit."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "GuXzDo1tJY_x",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "a031eaff-8e54-499b-d64f-c9d7e7fd7dca"
+      },
+      "source": [
+        "# Phone Menu Function\n",
+        "#define a function\n",
+        "def displayArray():\n",
+        "  print(\"###############################\")\n",
+        "  print(\"MYPY PHONE BOOK\")\n",
+        "  print(\"###############################\")\n",
+        "  print(\"1 : Add New Entry\")\n",
+        "  print(\"2 : Delete Entry\")\n",
+        "  print(\"3 : Update Entry\")\n",
+        "  print(\"4 : Lookup Number\")\n",
+        "  print(\"5 : QUIT\")\n",
+        "\n",
+        "\n",
+        "#create an empty phone dictionary to store the value\n",
+        "phoneBook = {}\n",
+        "\n",
+        "# review input function to checks if correct values have entered by the user\n",
+        "def review_input(question):\n",
+        "   while True:\n",
+        "        try:\n",
+        "            inputValue = int(input(question))\n",
+        "        except ValueError:\n",
+        "            print(\"Invalid Input, input a numeric value\")\n",
+        "            continue\n",
+        "        else:\n",
+        "            return inputValue\n",
+        "\n",
+        "# create an entry function to add numbers and name to the MYPY Phone Book\n",
+        "#define the function Add New Entry\n",
+        "def add_New_entry():\n",
+        "            name = input(\"Enter Name: \")\n",
+        "            number = review_input(\"Enter Number: \")\n",
+        "            if number in phoneBook.keys():\n",
+        "                print(\"Number Already Exists!!!\")\n",
+        "            else:\n",
+        "                phoneBook.update({number: name})\n",
+        "                print(\"Contact Successfully Saved\")\n",
+        "\n",
+        "\n",
+        "# deleteEntry function is used to delete numbers from the MYPY Phone Book\n",
+        "#define the function Delete Entry\n",
+        "def deleteEntry():\n",
+        "#initiate a name vaibale \n",
+        "    deleteContactNumber = review_input(\"Enter the Contact number you wish to delete: \")\n",
+        "    if deleteContactNumber in phoneBook.keys():\n",
+        "        del phoneBook[deleteContact]\n",
+        "#print the required contact number\n",
+        "        print(deleteContactNumber, \"Contact has been deleted.\")\n",
+        "#inform the user that contact does not exit\n",
+        "    else:\n",
+        "        print(\"Contact doesn't exist.\")\n",
+        "\n",
+        "\n",
+        "# update function is used to update numbers and name on the MYPY Phone Book\n",
+        "#define the Update Function \n",
+        "def updateEntry():\n",
+        "    phone_number = review_input(\"Enter Phone number you would want to update:\")\n",
+        "    if phone_number in phoneBook.keys():\n",
+        "        del phoneBook[phone_number]\n",
+        "        phone_number = review_input(\"Enter New Phone number: \")\n",
+        "        name = input(\"Enter New Name: \")\n",
+        "        phoneBook.update({phone_num: new_name})\n",
+        "        print(\"Successfully Updated\")\n",
+        "    else:\n",
+        "        print(\"Number not found.\")\n",
+        "        option = input(\"Do you want to add the number(Yes or no)\")\n",
+        "        if options.upper() == \"YES\":\n",
+        "            addName = input(\"Enter Name: \")\n",
+        "            newNumber = input_review(\"Enter Number: \")\n",
+        "            if newNumber in phoneBook.keys():\n",
+        "                print(\"Number Exists Already!\")\n",
+        "            else:\n",
+        "                phoneBook.update({newNumber: addName})\n",
+        "                print(\"Contact Successfully Saved\")\n",
+        "        else:\n",
+        "            print(\"Thank You!\")\n",
+        "\n",
+        "\n",
+        "# lookupEntry function is used to lookup numbers and name to the MYPY Phone Book\n",
+        "def lookupEntry():\n",
+        "    lookup = review_input(\"Enter number to LOOKUP the contact: \")\n",
+        "    if lookup in phoneBook.keys():\n",
+        "            print(\"Contact number of \", lookup, \"is :\", phoneBook[lookup])\n",
+        "    else:\n",
+        "            print(\"Contact Doesn't Exist...\")\n",
+        "\n",
+        "\n",
+        "# Initiating loops to continuously run the phonebook until the user enters 5 to Quit\n",
+        "while True:\n",
+        "# Displays the Menu function\n",
+        "    displayArray()\n",
+        "    try:\n",
+        "        option = int(input(\"Enter your option: \"))\n",
+        "    except ValueError:\n",
+        "        print(\"Invalid Input. Please enter an option between 1 to 5.\")\n",
+        "        continue\n",
+        "\n",
+        "    if option == 1:\n",
+        "# Creating addEntry function to enable users to add contact entry\n",
+        "        add_New_entry()\n",
+        "        continue\n",
+        "    elif option == 2:\n",
+        "# Creating deleteEntry function to enable users to delete contact entry\n",
+        "        deleteEntry()\n",
+        "        continue\n",
+        "    elif option == 3:\n",
+        "# Creating updateEntry function to enable users to update contact entry\n",
+        "        updateEntry()\n",
+        "        continue\n",
+        "    elif option == 4:\n",
+        "# Creating lookupEntry function to enable users to lookup entry\n",
+        "        lookupEntry()\n",
+        "        continue\n",
+        "    elif option == 5:\n",
+        "        print(\"Existing the Application\")\n",
+        "# Used to break out of the application\n",
+        "        break\n",
+        "    else:\n",
+        "        print(\"Invalid Input. Kindly enter a numeric value less than 5\")"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "###############################\n",
+            "MYPY PHONE BOOK\n",
+            "###############################\n",
+            "1 : Add New Entry\n",
+            "2 : Delete Entry\n",
+            "3 : Update Entry\n",
+            "4 : Lookup Number\n",
+            "5 : QUIT\n",
+            "Enter your option: 1\n",
+            "Enter Name: Stephanie Eje\n",
+            "Enter Number: 2\n",
+            "Contact Successfully Saved\n",
+            "###############################\n",
+            "MYPY PHONE BOOK\n",
+            "###############################\n",
+            "1 : Add New Entry\n",
+            "2 : Delete Entry\n",
+            "3 : Update Entry\n",
+            "4 : Lookup Number\n",
+            "5 : QUIT\n",
+            "Enter your option: 5\n",
+            "Existing the Application\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
